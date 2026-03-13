@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Quality Gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Gate 1: TypeScript — zero erros de tipo
+      - name: Type check
+        run: pnpm type-check
+
+      # Gate 2: ESLint — zero warnings
+      # --max-warnings=0 faz o CI falhar em qualquer warning, não só erros
+      # Nota: Next.js 16 removeu next lint — usamos eslint diretamente
+      - name: Lint
+        run: pnpm lint -- --max-warnings=0
+
+      # Gate 3: Prettier — zero arquivos fora do padrão
+      - name: Format check
+        run: pnpm format:check
+
+      # Gate 4: Testes — todos passando
+      # --run desativa o modo watch (necessário em CI)
+      - name: Test
+        run: pnpm test:run
+
+      # Gate 5: Build — valida MDX, schemas Zod, geração de páginas estáticas
+      # Se o build passar, dados inválidos nunca chegaram ao usuário
+      - name: Build
+        run: pnpm build

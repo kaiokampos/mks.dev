@@ -1,0 +1,12 @@
+# mise.toml — mks.dev
+# Gerenciador de versões do projeto.
+# Qualquer colaborador que rodar `mise install` terá o ambiente idêntico.
+# Fonte: https://mise.jdx.dev/dev-tools/
+
+[tools]
+node   = "24"      # Node.js 24 LTS (Krypton) — EOL abril 2028
+python = "latest"  # Python — para scripts e ferramentas auxiliares
+
+[settings]
+# Lê .nvmrc de projetos de terceiros automaticamente
+legacy_version_file = true

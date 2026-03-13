@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# mks.dev
 
-## Getting Started
+Portfólio técnico pessoal — Miguel, Kaio e Samara.
 
-First, run the development server:
+Site estático construído com Next.js 16, TypeScript e MDX. Serve como vitrine de engenharia: a qualidade da arquitetura é parte do produto.
+
+**Deploy:** [mksdev.vercel.app](https://mksdev.vercel.app)
+
+---
+
+## Stack
+
+| Camada          | Tecnologia                 |
+| --------------- | -------------------------- |
+| Framework       | Next.js 16 (App Router)    |
+| Linguagem       | TypeScript 5 — strict mode |
+| Estilo          | Tailwind CSS 4.x           |
+| Validação       | Zod                        |
+| Conteúdo        | MDX                        |
+| Package manager | pnpm                       |
+| Deploy          | Vercel                     |
+| Testes          | Vitest                     |
+
+---
+
+## Setup local
+
+**Pré-requisitos:** Node.js 24, pnpm 9+
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Clonar o repositório
+git clone git@github.com:kaiokampos/mks.dev.git
+cd mks.dev
+
+# Instalar dependências (instala e ativa os git hooks automaticamente)
+pnpm install
+
+# Configurar variáveis de ambiente
+cp .env.example .env.local
+# edite .env.local com os valores corretos
+
+# Rodar em desenvolvimento
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts disponíveis
 
-## Learn More
+```bash
+pnpm dev           # servidor de desenvolvimento
+pnpm build         # build de produção
+pnpm start         # rodar o build localmente
+pnpm type-check    # verificar tipos TypeScript
+pnpm lint          # ESLint
+pnpm format        # Prettier (modifica arquivos)
+pnpm format:check  # Prettier (só verifica, sem modificar — usado no CI)
+pnpm test          # Vitest em modo watch
+pnpm coverage      # relatório de cobertura de testes
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estrutura do projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A arquitetura segue um modelo de **Modular Layered Architecture** com inspiração em DDD Lite:
 
-## Deploy on Vercel
+```
+app/          → apresentação (Next.js App Router)
+features/     → application layer (casos de uso, orquestração)
+domain/       → modelo conceitual (schemas Zod, tipos)
+server/       → infraestrutura (leitura de MDX, filesystem)
+content/      → data source (arquivos .mdx)
+components/   → UI primitivos (agnósticos de domínio)
+lib/          → integrações externas
+config/       → configurações globais
+docs/         → documentação e ADRs
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Para entender as decisões e convenções em detalhe:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — visão arquitetural do sistema
+- [`docs/CONVENTIONS.md`](./docs/CONVENTIONS.md) — regras e convenções do projeto
+- [`docs/PROJECT_STRUCTURE.md`](./docs/PROJECT_STRUCTURE.md) — estrutura de diretórios
+- [`docs/adr/`](./docs/adr/) — Architecture Decision Records
+
+---
+
+## Contribuindo
+
+Veja [`CONTRIBUTING.md`](./CONTRIBUTING.md) antes de abrir um PR.
+
+---
+
+## Licença
+
+MIT — veja [`LICENSE`](./LICENSE).
