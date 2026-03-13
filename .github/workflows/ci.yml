@@ -37,7 +37,7 @@ jobs:
       # --max-warnings=0 faz o CI falhar em qualquer warning, não só erros
       # Nota: Next.js 16 removeu next lint — usamos eslint diretamente
       - name: Lint
-        run: pnpm lint -- --max-warnings=0
+        run: pnpm exec eslint --max-warnings=0
 
       # Gate 3: Prettier — zero arquivos fora do padrão
       - name: Format check
