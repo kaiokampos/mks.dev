@@ -13,7 +13,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        # v4.2.2 — versão explícita para CI determinístico.
+        # Aliases como @v4 podem mudar silenciosamente entre runs.
+        uses: actions/checkout@v4.2.2
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -21,34 +23,49 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        # v4.4.0 — primeira versão da série 4.x com suporte nativo a Node.js 24.
+        # Node.js 24 é o LTS ativo em 2026 — fixado também no mise.toml.
+        uses: actions/setup-node@v4.4.0
         with:
           node-version: 24
+          # cache: pnpm instrui a action a cachear ~/.pnpm-store entre runs,
+          # acelerando o pnpm install em pushes subsequentes.
           cache: pnpm
 
       - name: Install dependencies
+        # --frozen-lockfile garante que o pnpm-lock.yaml é respeitado.
+        # Se houver divergência entre package.json e lockfile, o CI falha —
+        # nunca instala versões não intencionais em produção.
         run: pnpm install --frozen-lockfile
 
-      # Gate 1: TypeScript — zero erros de tipo
+      # Gate 1: TypeScript
+      # tsc --noEmit valida tipos sem gerar arquivos.
+      # Zero erros de tipo é obrigatório — warnings viram erros aqui.
       - name: Type check
         run: pnpm type-check
 
-      # Gate 2: ESLint — zero warnings
-      # --max-warnings=0 faz o CI falhar em qualquer warning, não só erros
-      # Nota: Next.js 16 removeu next lint — usamos eslint diretamente
+      # Gate 2: ESLint
+      # --max-warnings=0 faz o CI falhar em qualquer warning, não só erros.
+      # Isso evita acúmulo silencioso de problemas ao longo do tempo.
       - name: Lint
         run: pnpm exec eslint --max-warnings=0
 
-      # Gate 3: Prettier — zero arquivos fora do padrão
+      # Gate 3: Prettier
+      # --check verifica sem corrigir — correção é responsabilidade do dev local.
+      # Garante que todo código no repositório segue o mesmo estilo.
       - name: Format check
         run: pnpm format:check
 
-      # Gate 4: Testes — todos passando
-      # --run desativa o modo watch (necessário em CI)
+      # Gate 4: Testes
+      # --run desativa o modo watch do Vitest (necessário em ambiente CI,
+      # onde não há terminal interativo esperando input).
       - name: Test
         run: pnpm test:run
 
-      # Gate 5: Build — valida MDX, schemas Zod, geração de páginas estáticas
-      # Se o build passar, dados inválidos nunca chegaram ao usuário
+      # Gate 5: Build
+      # Este é o gate mais importante para um site estático:
+      # valida schemas Zod contra o conteúdo MDX, gera páginas estáticas
+      # e confirma que nenhum erro de runtime chegaria ao usuário.
+      # Se o build passar aqui, o deploy na Vercel pode ser confiado.
       - name: Build
         run: pnpm build
