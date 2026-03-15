@@ -16,7 +16,7 @@ Este documento é considerado a **base arquitetural do projeto**.
 
 ---
 
-# 1. Princípios Arquiteturais
+## 1. Princípios Arquiteturais
 
 ## 1.1 Separação de Responsabilidades
 

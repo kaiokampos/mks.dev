@@ -57,9 +57,13 @@ export default defineConfig([
             '*.mjs',
             '*.js',
             // módulos internos da arquitetura
-            'features/*/index',
-            'domain/*/index',
-            'server/*/index',
+            '@/features/*',
+            '@/domain/*',
+            '@/server/*',
+            '@/components/*',
+            '@/lib/*',
+            '@/config/*', 
+            '@/content/*',
             // imports relativos
             './**',
             '../**',

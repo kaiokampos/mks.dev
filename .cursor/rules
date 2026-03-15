@@ -1,0 +1,30 @@
+# mks.dev — Cursor Rules
+
+## Stack
+Next.js 16, TypeScript strict, Tailwind 4.x, Zod, pnpm
+
+## Arquitetura
+Feature-Based Architecture (FBA). Fluxo: app → features → domain/server → components → lib/config
+
+## Regras críticas
+- domain/ não importa NADA além de Zod
+- server/ não importa de features, app ou components
+- components/ não importa de domain, server ou features
+- Toda importação entre camadas usa aliases (@/features/blog, nunca caminhos relativos)
+- Cada módulo expõe API APENAS via index.ts — nunca importar arquivos internos
+- app/ importa de domain/ apenas com `import type`
+- 'use client' somente quando houver estado ou event handlers
+
+## Zod
+Schema é a fonte da verdade. Tipos sempre inferidos: `type Post = z.infer<typeof PostSchema>`
+Nunca declarar tipos manualmente em paralelo ao schema.
+
+## Nomenclatura
+- Componentes: PascalCase.tsx
+- Services: camelCase.service.ts  
+- Schemas: camelCase.schema.ts
+- Tipos: camelCase.types.ts
+- Diretórios: kebab-case
+
+## Commits
+Conventional Commits com escopos: blog, projects, lab, hero, config, server, domain, components, lib, docs, ci, deps
