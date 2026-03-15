@@ -14,3 +14,6 @@ export {
   getPostsByTag,
   getAllTags,
 } from './services/post.service'
+
+export { PostCard } from './components/PostCard'
+export { PostList } from './components/PostList'
