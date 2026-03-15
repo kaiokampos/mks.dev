@@ -62,7 +62,7 @@ export default defineConfig([
             '@/server/*',
             '@/components/*',
             '@/lib/*',
-            '@/config/*', 
+            '@/config/*',
             '@/content/*',
             // imports relativos
             './**',
