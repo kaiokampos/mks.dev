@@ -1,15 +1,14 @@
 /* app/globals.css */
-@import 'tailwindcss';
 
-/* Fontes */
+/* Fontes — deve vir primeiro, antes de qualquer regra */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=JetBrains+Mono:wght@400;500&display=swap');
 
+@import 'tailwindcss';
+
 @theme {
-  /* Tipografia */
   --font-display: 'Fraunces', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Paleta */
   --color-bg: #0e0e0e;
   --color-surface: #161616;
   --color-border: #2a2a2a;
